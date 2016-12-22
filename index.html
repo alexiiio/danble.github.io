@@ -3,70 +3,214 @@
 <head>
 	<title>全宇宙最美的女人</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="keywords" content="生日礼物，惊喜,有趣,最美" />
+	<meta name="keywords" content="最美的女人,生日礼物，惊喜,有趣" />
 	<meta name="description" content="danble" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 	<link href="css/ohmygod.css" rel="stylesheet" type="text/css"/>
 
+	<style type="text/css">
+		body {
+			/*background:url(images/bg.jpg) center no-repeat;*/
+			margin:0px;
+		}*
+		 img{ width:100%; }
 
+		canvas{ position: fixed; top:0; }
+		/* 背景音乐开关按钮 */
+		.music{
+			width:50px;height:50px;
+			background:url(img/close.png) no-repeat;
+			background-color: #b91b10;
+			position: fixed;
+			top:30%;
+			right:10px;
+			cursor: pointer;
+			border-radius: 25px;
+			z-index: 9999;
+		}
+		.music:hover{
+			background-color: #b91b10;
+		}
+		.container{
+			width: 50%;
+			height: 50%;
+			margin-top:-125%;
+			margin-left: auto;
+			margin-right: auto;
+			z-index: 9999;
+
+		}
+
+	</style>
 
 
 </head>
-<body>
-	<div class="container">
-		<div class="row">
-			<div class="col-xs-4 col-md-4">
-				<a href="#" class="thumbnail">
-					<img src="img/1.jpg" alt="...">
-				</a>
-			</div>
-			<div class="col-xs-4 col-md-4">
-				<a href="#" class="thumbnail">
-					<img src="img/2.jpg" alt="...">
-				</a>
-			</div>
-			<div class="col-xs-4 col-md-4">
-				<a href="#" class="thumbnail">
-					<img src="img/3.jpg" alt="...">
-				</a>
-			</div>
+<div onLoad="init()">
+
+<img src="img/bg.jpg">
+
+<!-- 背景音乐 -->
+<div class="music" data-flag="open">
+	<audio src="music/bg.mp3" autoplay="autoplay" loop="loop" id="audio"></audio>
+</div>
+<script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="js/ThreeCanvas.js"></script>
+<script type="text/javascript" src="js/Snow.js"></script>
+<script type="text/javascript">
+	var SCREEN_WIDTH = window.innerWidth;
+	var SCREEN_HEIGHT = window.innerHeight;
+	var container;
+	var particle;
+	var camera;
+	var scene;
+	var renderer;
+	var mouseX = 0;
+	var mouseY = 0;
+	var windowHalfX = SCREEN_WIDTH / 2;
+	var windowHalfY = SCREEN_HEIGHT / 2;
+	var particles = [];
+	var particleImage = new Image();//THREE.ImageUtils.loadTexture( "img/ParticleSmoke.png" );
+	particleImage.src = 'img/ParticleSmoke.png';
+
+	function init() {
+		container = document.createElement('div');
+		document.body.appendChild(container);
+
+		camera = new THREE.PerspectiveCamera( 75, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 10000 );
+		camera.position.z = 1000;
+
+		scene = new THREE.Scene();
+		scene.add(camera);
+
+		renderer = new THREE.CanvasRenderer();
+		renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+		var material = new THREE.ParticleBasicMaterial( { map: new THREE.Texture(particleImage) } );
+
+		for (var i = 0; i < 500; i++) {
+
+			particle = new Particle3D( material);
+			particle.position.x = Math.random() * 2000 - 1000;
+			particle.position.y = Math.random() * 2000 - 1000;
+			particle.position.z = Math.random() * 2000 - 1000;
+			particle.scale.x = particle.scale.y =  1;
+			scene.add( particle );
+
+			particles.push(particle);
+		}
+
+		container.appendChild( renderer.domElement );
+		document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+		setInterval( loop, 1000 / 60 );
+	}
+
+	function onDocumentMouseMove( event ) {
+		mouseX = event.clientX - windowHalfX;
+		mouseY = event.clientY - windowHalfY;
+	}
+
+	function loop() {
+		for(var i = 0; i<particles.length; i++)
+		{
+			var particle = particles[i];
+			particle.updatePhysics();
+			with(particle.position)
+			{
+				if(y<-1000) y+=2000;
+				if(x>1000) x-=2000;
+				else if(x<-1000) x+=2000;
+				if(z>1000) z-=2000;
+				else if(z<-1000) z+=2000;
+			}
+		}
+		camera.position.x += ( mouseX - camera.position.x ) * 0.05;
+		camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
+		camera.lookAt(scene.position);
+		renderer.render( scene, camera );
+	}
+	window.onload = init;
+
+
+	/*开关背景音乐*/
+	$('.music').on({
+		'click':function(){
+			var flag = $(this).attr('data-flag');
+			if(flag == 'open'){
+				audio.pause();
+				$(this).attr('data-flag','close');
+				$(this).css('background','url(img/open.png)');
+				$(this).css('background-color','#31628d');
+			}else{
+				audio.play();
+				$(this).attr('data-flag','open');
+				$(this).css('background','url(img/close.png)');
+				$(this).css('background-color','#b91b10');
+			}
+		},
+		/*'mouseenter':function(){
+		 $(this).css('background-color','#b91b10');
+		 },
+		 'mouseleave':function(){
+		 $(this).css('background','#d5ebf8');
+		 },*/
+	});
+</script>
+
+<div class="container">
+	<div class="row">
+		<div class="col-xs-4 col-md-4">
+			<a href="#" class="thumbnail">
+				<img src="img/1.jpg" alt="...">
+			</a>
 		</div>
-		<div class="row">
-			<div class="col-xs-4 col-md-4">
-				<a href="#" class="thumbnail">
-					<img src="img/4.jpg" alt="...">
-				</a>
-			</div>
-			<div class="col-xs-4 col-md-4">
-				<a href="#" class="thumbnail">
-					<img src="img/5.png" alt="...">
-				</a>
-			</div>
-			<div class="col-xs-4 col-md-4">
-				<a href="#" class="thumbnail">
-					<img src="img/6.jpg" alt="...">
-				</a>
-			</div>
+		<div class="col-xs-4 col-md-4">
+			<a href="#" class="thumbnail">
+				<img src="img/2.jpg" alt="...">
+			</a>
 		</div>
-		<div class="row">
-			<div class="col-xs-4 col-md-4">
-				<a href="#" class="thumbnail">
-					<img src="img/7.jpg" alt="...">
-				</a>
-			</div>
-			<div class="col-xs-4 col-md-4">
-				<a href="#" class="thumbnail">
-					<img src="img/8.jpg" alt="...">
-				</a>
-			</div>
-			<div class="col-xs-4 col-md-4">
-				<a href="#" class="thumbnail">
-					<img src="img/9.jpg" alt="...">
-				</a>
-			</div>
+		<div class="col-xs-4 col-md-4">
+			<a href="#" class="thumbnail">
+				<img src="img/3.jpg" alt="...">
+			</a>
 		</div>
 	</div>
+	<div class="row">
+		<div class="col-xs-4 col-md-4">
+			<a href="#" class="thumbnail">
+				<img src="img/4.jpg" alt="...">
+			</a>
+		</div>
+		<div class="col-xs-4 col-md-4">
+			<a href="#" class="thumbnail">
+				<img src="img/5.png" alt="...">
+			</a>
+		</div>
+		<div class="col-xs-4 col-md-4">
+			<a href="#" class="thumbnail">
+				<img src="img/6.jpg" alt="...">
+			</a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4 col-md-4">
+			<a href="#" class="thumbnail">
+				<img src="img/7.jpg" alt="...">
+			</a>
+		</div>
+		<div class="col-xs-4 col-md-4">
+			<a href="#" class="thumbnail">
+				<img src="img/8.jpg" alt="...">
+			</a>
+		</div>
+		<div class="col-xs-4 col-md-4">
+			<a href="#" class="thumbnail">
+				<img src="img/9.jpg" alt="...">
+			</a>
+		</div>
+	</div>
+</div>
 
 </body>
+
+
 </html>
