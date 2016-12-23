@@ -19,11 +19,11 @@
 		canvas{ position: fixed; top:0; }
 		/* 背景音乐开关按钮 */
 		.music{
-			width:50px;height:50px;
+			width:40px;height:40px;
 			background:url(img/close.png) no-repeat;
 			background-color: #b91b10;
 			position: fixed;
-			top:30%;
+			top:20%;
 			right:10px;
 			cursor: pointer;
 			border-radius: 25px;
@@ -35,7 +35,7 @@
 		.container{
 			width: 50%;
 			height: 50%;
-			margin-top:-125%;
+			margin-top:-58%;
 			margin-left: auto;
 			margin-right: auto;
 			z-index: 9999;
@@ -47,11 +47,9 @@
 
 </head>
 
-<body>
+<body >
 <div onLoad="init()">
-
-<img src="img/bg.jpg">
-
+	<img src="img/bg1.jpg"/>
 <!-- 背景音乐 -->
 <div class="music" data-flag="open">
 	<audio src="music/bg.mp3" autoplay="autoplay" loop="loop" id="audio"></audio>
@@ -148,14 +146,11 @@
 				$(this).css('background','url(img/close.png)');
 				$(this).css('background-color','#b91b10');
 			}
-		},
-		/*'mouseenter':function(){
-		 $(this).css('background-color','#b91b10');
-		 },
-		 'mouseleave':function(){
-		 $(this).css('background','#d5ebf8');
-		 },*/
+		}
 	});
+
+
+
 </script>
 
 <div class="container">
