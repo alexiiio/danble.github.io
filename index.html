@@ -141,13 +141,13 @@
 		renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 		var material = new THREE.ParticleBasicMaterial( { map: new THREE.Texture(particleImage) } );
 
-		for (var i = 0; i < 500; i++) {
+		for (var i = 0; i < 50; i++) {
 
 			particle = new Particle3D( material);
 			particle.position.x = Math.random() * 2000 - 1000;
 			particle.position.y = Math.random() * 2000 - 1000;
 			particle.position.z = Math.random() * 2000 - 1000;
-			particle.scale.x = particle.scale.y =  1;
+			particle.scale.x = particle.scale.y =  2.5;
 			scene.add( particle );
 
 			particles.push(particle);
